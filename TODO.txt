@@ -1,0 +1,5 @@
+Josh - Layout the home page, and make css template (that hopefully works (but its not going to))
+
+Ryan - Implementing the questions page
+
+David - Do post for registration page and do Facebook signup

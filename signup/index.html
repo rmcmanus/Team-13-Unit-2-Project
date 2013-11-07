@@ -1,0 +1,57 @@
+
+ <h1>Sign-Up</h1> 
+
+<form enctype="multipart/form-data" action="../../modules/register/index.php" method="post" id="user-register-form">
+		<div>
+						
+				<br/>
+				<!------------****NAMES****------------->
+				<div class="inputBoxes">
+				<label>
+					<span>First Name:<em class="required">*</em></span>
+					<input name="firstname" displayname="First Name" id="firstname" class="text_input"/>
+				</label>
+					<br>&nbsp;<br>
+				<label>
+					<span>Last Name:<em class="required">*</em></span>
+					<input name="lastname" displayname="Last Name" id="lastname" class="text_input"/>
+				</label>
+					<br>&nbsp;</br>
+				<!------------**END_OF_NAMES**---------->
+				
+				<!------------****EMAIL****------------->
+				<label>
+					<span>Email:<em class="required">*</em></span>
+					<input name="email" displayname="Email" id="email" class="text_input"/>
+				</label>
+				</label>
+					<br>&nbsp;</br>
+
+				<label>
+					<span>User Type:<em class="required">*</em></span>
+					<select name="disciplineSelect" displayname="Discipline" id="disciplineSelect" class="text_input"> 
+						<option value="Student">Student</option>
+						<option value="Employer">Employer</option>
+					</select>
+				</label>
+					<br>&nbsp;</br>
+				
+				</div>
+
+				<!--------****UPLOAD_PICTURE****-------->
+				<label>
+					<span>Upload picture:<em class="required">*</em></span>
+					<input type="file" id="upload_picture" displayname="Picture" name="upload_picture" class="text_input"/>
+				</label>
+				<!-------**END_OF_UPLOAD_PICTURE**------>
+					
+						
+				
+				</div>
+				<input id="submit" type="submit" value="Sign-Up" />
+				<br>&nbsp;</br>
+				<!-- <div id="toFillOutLabel">Need to fill out:</div>
+    			<div id="toFillOut" style="color: red"> -->
+    			</div>
+				
+			</form>
