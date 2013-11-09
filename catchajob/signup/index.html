@@ -1,11 +1,102 @@
 
- <h1>Sign-Up</h1> 
+<h1>Sign-Up</h1> 
+
+<body>
+
+<div id="fb-root"></div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<script>
+  window.fbAsyncInit = function() {
+    // init the FB JS SDK
+    FB.init({
+      appId      : '184177521774826',                        // App ID from the app dashboard
+      channelUrl : '//localhost/catchajob', // Channel file for x-domain comms
+      status     : true,                                 // Check Facebook Login status
+      xfbml      : true                                  // Look for social plugins on the page
+    });
+
+    // Additional initialization code such as adding Event Listeners goes here
+    FB.Event.subscribe('auth.authResponseChange', function(response) {
+    // Here we specify what we do with the response anytime this event occurs. 
+    if (response.status === 'connected') {
+      // The response object is returned with a status field that lets the app know the current
+      // login status of the person. In this case, we're handling the situation where they 
+      // have logged in to the app.
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // In this case, the person is logged into Facebook, but not into the app, so we call
+      // FB.login() to prompt them to do so. 
+      // In real-life usage, you wouldn't want to immediately prompt someone to login 
+      // like this, for two reasons:
+      // (1) JavaScript created popup windows are blocked by most browsers unless they 
+      // result from direct interaction from people using the app (such as a mouse click)
+      // (2) it is a bad experience to be continually prompted to login upon page load.
+      FB.login(function(response) {},{scope: 'email'});
+    } else {
+      // In this case, the person is not logged into Facebook, so we call the login() 
+      // function to prompt them to do so. Note that at this stage there is no indication
+      // of whether they are logged into the app. If they aren't then they'll see the Login
+      // dialog right after they log in to Facebook. 
+      // The same caveats as above apply to the FB.login() call here.
+      console.log("This one");
+      FB.login(function(response) {},{scope: 'email'});
+    }
+  });
+  };
+
+  // Load the SDK asynchronously
+  (function(d){
+   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement('script'); js.id = id; js.async = true;
+   js.src = "//connect.facebook.net/en_US/all.js";
+   ref.parentNode.insertBefore(js, ref);
+  }(document));
+
+  // Here we run a very simple test of the Graph API after login is successful. 
+  // This testAPI() function is only called in those cases. 
+  function testAPI() {
+  	FB.api({ method: 'fql.query', query: 'SELECT email,user_status,friends_status,user_photos,friends_photos,user_location,friends_location FROM permissions WHERE uid=me()' }, function(resp) {   
+for(var key in resp[0]) {   
+    if(resp[0][key] === "1")   
+        console.log(key+' is granted');   
+    else   
+        console.log(key+' is not granted');   
+}   
+});
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Good to see you, ' + response.name + '.');
+      first = response.first_name;
+      last = response.last_name;
+      email = response.email;
+      $.ajax({
+  		url: "signup.php",
+  		type: "post",
+  		data: {first: first, last: last, email: email},
+  		// success: function(returnval){
+    //   		alert("success");
+    //    		$("#result").html('submitted successfully:' + returnval);
+  		// },
+  		// error:function(){
+    //   		alert("failure");
+    //   		$("#result").html('there is error while submit');
+  		// }   
+  	}); 
+      // alert("After");
+    });    
+  }
+
+  function logout() {
+  	alert("In here");
+  	FB.logout();
+  }
+</script>
 
 <form enctype="multipart/form-data" action="../../modules/register/index.php" method="post" id="user-register-form">
 		<div>
 						
 				<br/>
-				<!------------****NAMES****------------->
 				<div class="inputBoxes">
 				<label>
 					<span>First Name:<em class="required">*</em></span>
@@ -17,9 +108,8 @@
 					<input name="lastname" displayname="Last Name" id="lastname" class="text_input"/>
 				</label>
 					<br>&nbsp;</br>
-				<!------------**END_OF_NAMES**---------->
 				
-				<!------------****EMAIL****------------->
+
 				<label>
 					<span>Email:<em class="required">*</em></span>
 					<input name="email" displayname="Email" id="email" class="text_input"/>
@@ -38,20 +128,21 @@
 				
 				</div>
 
-				<!--------****UPLOAD_PICTURE****-------->
 				<label>
 					<span>Upload picture:<em class="required">*</em></span>
 					<input type="file" id="upload_picture" displayname="Picture" name="upload_picture" class="text_input"/>
 				</label>
-				<!-------**END_OF_UPLOAD_PICTURE**------>
 					
-						
-				
 				</div>
-				<input id="submit" type="submit" value="Sign-Up" />
+				<input id="submit" type="submit" value="Sign-Up" /> or 
+				<fb:login-button autologoutlink='true' perms='email' show-faces="true" width="200" max-rows="1"></fb:login-button>
 				<br>&nbsp;</br>
 				<!-- <div id="toFillOutLabel">Need to fill out:</div>
     			<div id="toFillOut" style="color: red"> -->
     			</div>
+
+    			<!-- <div id="result" style="color: red"> -->
 				
 			</form>
+			<!-- <input id="submit" type="submit" value="Logout" onclick="logout();" /> -->
+</body>
